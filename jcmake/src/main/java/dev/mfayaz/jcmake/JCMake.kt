@@ -1,6 +1,6 @@
 package dev.mfayaz.jcmake
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -13,20 +13,28 @@ import org.json.JSONObject
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MakeUI2(json: String, onDataChange: (String, String) -> Unit) {
+fun MakeUI(json: String, onDataChange: (String, String) -> Unit) {
   val jsonObject = JSONObject(json)
 
-  Column {
-    for (key in jsonObject.keys()) {
-      var tt by remember { mutableStateOf(jsonObject[key].toString()) }
-      OutlinedTextField(
-        value = tt,
-        onValueChange = {
-          tt = it
-          onDataChange(key, it)
-        },
-        label = { Text(text = key) }
-      )
+  LazyColumn {
+    item {
+      Fill(jsonObject, onDataChange)
     }
+  }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Fill(jsonObject: JSONObject, onDataChange: (String, String) -> Unit) {
+  for (key in jsonObject.keys()) {
+    var state by remember { mutableStateOf(jsonObject[key].toString()) }
+    OutlinedTextField(
+      value = state,
+      onValueChange = {
+        state = it
+        onDataChange(key, it)
+      },
+      label = { Text(text = key) }
+    )
   }
 }
