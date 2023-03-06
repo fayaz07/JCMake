@@ -36,5 +36,5 @@ fun onDataChange(key: String, value: String) {
 
 @Composable
 fun Content() {
-  MakeUI(TestData.simpleField, ::onDataChange)
+  MakeUI(TestData.simpleForm1, ::onDataChange)
 }
