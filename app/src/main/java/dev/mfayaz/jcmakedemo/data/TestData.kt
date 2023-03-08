@@ -1,7 +1,6 @@
 package dev.mfayaz.jcmakedemo.data
 
 object TestData {
-  const val simpleField = "{\n  \"name\": \"Fayaz\"\n,\"email\": \"fayaz@me.com\"\n}"
   const val simpleForm1 =
-    "{\n   \"name\" : \"my_username\",\n   \"first-name\" : \"My\",\n   \"last-name\" : \"Username\",\n   \"display-name\" : \"My Username\",\n   \"email\" : \"user@example.test\",\n   \"password\" : {\n      \"value\" : \"my_password\"\n   },\n   \"active\" : true\n}";
+    "{\n   \"name\" : \"my_username\",\n   \"first-name\" : \"My\",\n   \"last-name\" : \"Username\",\n   \"display-name\" : \"My Username\",\n   \"email\" : \"user@example.test\",\n   \"password\" : {\n      \"value\" : \"my_password\"\n   },\n   \"active\" : true\n}"
 }
