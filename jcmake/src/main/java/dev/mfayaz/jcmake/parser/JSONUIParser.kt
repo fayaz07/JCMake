@@ -10,6 +10,7 @@ import dev.mfayaz.jcmake.exceptions.JSONParseException
 import dev.mfayaz.jcmake.model.mapper.TextFieldModelMapper
 import dev.mfayaz.jcmake.ui.DefaultSwitch
 import dev.mfayaz.jcmake.ui.DefaultTextField
+import dev.mfayaz.jcmake.ui.DefaultTextFieldWithError
 import java.math.BigDecimal
 import org.json.JSONObject
 
@@ -108,10 +109,11 @@ class JSONUIParser(jsonString: String) {
       )
       FieldType.TextFieldObject -> {
         val textFieldObject = TextFieldModelMapper.parseFromJson(key, jsonObject.getJSONObject(key))
-        DefaultTextField(
+        DefaultTextFieldWithError(
           label = textFieldObject.label,
           value = textFieldObject.value,
           onChange = onDataChange,
+          error = textFieldObject.error ?: ""
         )
       }
       else -> {
