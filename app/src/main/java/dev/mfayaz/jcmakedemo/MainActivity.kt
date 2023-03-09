@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
   }
 }
 
-fun onDataChange(key: String, value: String) {
+fun onDataChange(key: String, value: Any) {
   Log.d("change", "key=$key, value=$value")
 }
 

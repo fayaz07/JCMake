@@ -1,8 +1,11 @@
 package dev.mfayaz.jcmake.parser
 
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import dev.mfayaz.jcmake.exceptions.InvalidJSONException
 import dev.mfayaz.jcmake.exceptions.JSONParseException
+import dev.mfayaz.jcmake.ui.DefaultSwitch
 import dev.mfayaz.jcmake.ui.DefaultTextField
 import java.math.BigDecimal
 import org.json.JSONObject
@@ -11,10 +14,10 @@ class JSONUIParser(jsonString: String) {
   private lateinit var jsonObject: JSONObject
 
   init {
-    validateJson(jsonString)
+    initialise(jsonString)
   }
 
-  private fun validateJson(jsonString: String) {
+  private fun initialise(jsonString: String) {
     if (jsonString.isEmpty()) throw InvalidJSONException(jsonString)
 
     try {
@@ -28,26 +31,76 @@ class JSONUIParser(jsonString: String) {
   }
 
   fun typeOf(key: String): FieldType {
-
     return when (jsonObject.get(key)) {
       is String -> FieldType.String
       is Boolean -> FieldType.Boolean
-
       is Int -> FieldType.Long
       is Long -> FieldType.Long
-
       is Float -> FieldType.Double
       is Double -> FieldType.Double
       is BigDecimal -> FieldType.Double
-
       else -> FieldType.Object
     }
   }
 
+  fun parseDouble(value: String): Double {
+    return value.toDoubleOrNull() ?: 0.0
+  }
+
+  fun parseInt(value: String): Int {
+    return value.toIntOrNull() ?: 0
+  }
+
+  fun parseLong(value: String): Long {
+    return value.toLongOrNull() ?: 0
+  }
+
   @Composable
-  fun Fill(onDataChange: (String, String) -> Unit) {
+  fun GetTextField(key: String, onDataChange: (String, Any) -> Unit) {
+    when (typeOf(key)) {
+      FieldType.String -> DefaultTextField(
+        label = key,
+        value = jsonObject.getString(key),
+        onChange = onDataChange
+      )
+      FieldType.Integer -> DefaultTextField(
+        label = key,
+        value = jsonObject.getInt(key).toString(),
+        onChange = { k, v ->
+          onDataChange(k, parseInt(v))
+        }
+      )
+      FieldType.Long -> DefaultTextField(
+        label = key,
+        value = jsonObject.getLong(key).toString(),
+        onChange = { k, v ->
+          onDataChange(k, parseLong(v))
+        }
+      )
+      FieldType.Double -> DefaultTextField(
+        label = key,
+        value = jsonObject.getString(key),
+        onChange = { k, v ->
+          onDataChange(k, parseDouble(v))
+        }
+      )
+      FieldType.Boolean -> DefaultSwitch(
+        label = key,
+        value = jsonObject.getBoolean(key),
+        onChange = onDataChange
+      )
+      else -> {
+        Spacer(modifier = Modifier)
+//        Text(text = key)
+      }
+//      FieldType.Object -> TODO()
+    }
+  }
+
+  @Composable
+  fun Fill(onDataChange: (String, Any) -> Unit) {
     for (key in jsonObject.keys()) {
-      DefaultTextField(label = key, value = jsonObject.getString(key), onChange = onDataChange)
+      GetTextField(key = key, onDataChange = onDataChange)
     }
   }
 }
