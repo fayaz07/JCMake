@@ -1,8 +1,10 @@
 package dev.mfayaz.jcmake.parser
 
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import dev.mfayaz.jcmake.exceptions.InvalidJSONException
 import dev.mfayaz.jcmake.exceptions.JSONParseException
 import dev.mfayaz.jcmake.ui.DefaultSwitch
@@ -68,21 +70,24 @@ class JSONUIParser(jsonString: String) {
         value = jsonObject.getInt(key).toString(),
         onChange = { k, v ->
           onDataChange(k, parseInt(v))
-        }
+        },
+        keyboardType = KeyboardType.Number
       )
       FieldType.Long -> DefaultTextField(
         label = key,
         value = jsonObject.getLong(key).toString(),
         onChange = { k, v ->
           onDataChange(k, parseLong(v))
-        }
+        },
+        keyboardType = KeyboardType.Number
       )
       FieldType.Double -> DefaultTextField(
         label = key,
         value = jsonObject.getString(key),
         onChange = { k, v ->
           onDataChange(k, parseDouble(v))
-        }
+        },
+        keyboardType = KeyboardType.Number
       )
       FieldType.Boolean -> DefaultSwitch(
         label = key,
@@ -90,8 +95,7 @@ class JSONUIParser(jsonString: String) {
         onChange = onDataChange
       )
       else -> {
-        Spacer(modifier = Modifier)
-//        Text(text = key)
+        Text(text = key)
       }
 //      FieldType.Object -> TODO()
     }
