@@ -1,12 +1,11 @@
 package dev.mfayaz.jcmake.parser
 
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import dev.mfayaz.jcmake.exceptions.InvalidJSONException
 import dev.mfayaz.jcmake.exceptions.JSONParseException
+import dev.mfayaz.jcmake.model.json.KEY_VALUE
 import dev.mfayaz.jcmake.model.mapper.TextFieldModelMapper
 import dev.mfayaz.jcmake.ui.DefaultSwitch
 import dev.mfayaz.jcmake.ui.DefaultTextField
@@ -70,6 +69,20 @@ class JSONUIParser(jsonString: String) {
     return value.toLongOrNull() ?: 0
   }
 
+  fun getKeyboardTypeFromValue(key: String, jsonObj: JSONObject): KeyboardType {
+    return when (jsonObj.get(key)) {
+      is String -> KeyboardType.Text
+      is Int -> KeyboardType.Number
+      is Long -> KeyboardType.Number
+      is Float -> KeyboardType.Number
+      is Double -> KeyboardType.Number
+      is BigDecimal -> KeyboardType.Number
+      else -> {
+        KeyboardType.Text
+      }
+    }
+  }
+
   @Composable
   fun GetTextField(key: String, onDataChange: (String, Any) -> Unit) {
     when (typeOf(key)) {
@@ -108,12 +121,14 @@ class JSONUIParser(jsonString: String) {
         onChange = onDataChange
       )
       FieldType.TextFieldObject -> {
-        val textFieldObject = TextFieldModelMapper.parseFromJson(key, jsonObject.getJSONObject(key))
+        val nestedJSONObject = jsonObject.getJSONObject(key)
+        val textFieldObject = TextFieldModelMapper.parseFromJson(key, nestedJSONObject)
         DefaultTextFieldWithError(
           label = textFieldObject.label,
           value = textFieldObject.value,
           onChange = onDataChange,
-          error = textFieldObject.error ?: ""
+          error = textFieldObject.error ?: "",
+          keyboardType = getKeyboardTypeFromValue(KEY_VALUE, nestedJSONObject)
         )
       }
       else -> {

@@ -26,12 +26,14 @@ fun DefaultTextFieldWithError(
       onChange = onChange,
       keyboardType = keyboardType,
     )
-    Text(
-      modifier = Modifier.padding(top = 4.dp, start = 8.dp),
-      text = error,
-      style = TextStyle(
-        color = COLOR_ERROR
+    if (error.isNotEmpty()) {
+      Text(
+        modifier = Modifier.padding(top = 4.dp, start = 8.dp),
+        text = error,
+        style = TextStyle(
+          color = COLOR_ERROR
+        )
       )
-    )
+    }
   }
 }
