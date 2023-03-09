@@ -76,7 +76,17 @@ class JSONUIParserTest {
   }
 
   @Test
-  fun `when passed a key to typeOf which holds an Object should return Object field type`() {
+  fun `when passed a key to typeOf which holds an TextFieldObject should TextFieldObject Object field type`() {
     simpleJsonParser.typeOf("password") shouldBe FieldType.TextFieldObject
+  }
+
+  @Test
+  fun `when passed a key to typeOf which holds an TextFieldObject should return TextFieldObject field type - 2`() {
+    simpleJsonParser.typeOf("rollNumber") shouldBe FieldType.TextFieldObject
+  }
+
+  @Test
+  fun `when passed a key to typeOf which holds an TextFieldObject should return TextFieldObject field type - 3`() {
+    simpleJsonParser.typeOf("bmi") shouldBe FieldType.TextFieldObject
   }
 }
