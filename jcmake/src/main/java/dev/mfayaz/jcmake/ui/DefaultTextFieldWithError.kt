@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import dev.mfayaz.jcmake.style.COLOR_ERROR
@@ -17,7 +17,8 @@ fun DefaultTextFieldWithError(
   value: String,
   onChange: (String, String) -> Unit,
   keyboardType: KeyboardType = KeyboardType.Text,
-  error: String = ""
+  error: String = "",
+  imeAction: ImeAction
 ) {
   Column {
     DefaultTextField(
@@ -25,6 +26,7 @@ fun DefaultTextFieldWithError(
       value = value,
       onChange = onChange,
       keyboardType = keyboardType,
+      imeAction = imeAction
     )
     if (error.isNotEmpty()) {
       Text(

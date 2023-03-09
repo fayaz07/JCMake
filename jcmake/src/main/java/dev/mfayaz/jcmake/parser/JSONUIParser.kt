@@ -2,6 +2,7 @@ package dev.mfayaz.jcmake.parser
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import dev.mfayaz.jcmake.exceptions.InvalidJSONException
 import dev.mfayaz.jcmake.exceptions.JSONParseException
@@ -84,12 +85,17 @@ class JSONUIParser(jsonString: String) {
   }
 
   @Composable
-  fun GetTextField(key: String, onDataChange: (String, Any) -> Unit) {
+  fun GetComposable(
+    key: String,
+    onDataChange: (String, Any) -> Unit,
+    imeAction: ImeAction
+  ) {
     when (typeOf(key)) {
       FieldType.String -> DefaultTextField(
         label = key,
         value = jsonObject.getString(key),
-        onChange = onDataChange
+        onChange = onDataChange,
+        imeAction = imeAction
       )
       FieldType.Integer -> DefaultTextField(
         label = key,
@@ -97,7 +103,8 @@ class JSONUIParser(jsonString: String) {
         onChange = { k, v ->
           onDataChange(k, parseInt(v))
         },
-        keyboardType = KeyboardType.Number
+        keyboardType = KeyboardType.Number,
+        imeAction = imeAction
       )
       FieldType.Long -> DefaultTextField(
         label = key,
@@ -105,7 +112,8 @@ class JSONUIParser(jsonString: String) {
         onChange = { k, v ->
           onDataChange(k, parseLong(v))
         },
-        keyboardType = KeyboardType.Number
+        keyboardType = KeyboardType.Number,
+        imeAction = imeAction
       )
       FieldType.Double -> DefaultTextField(
         label = key,
@@ -113,7 +121,8 @@ class JSONUIParser(jsonString: String) {
         onChange = { k, v ->
           onDataChange(k, parseDouble(v))
         },
-        keyboardType = KeyboardType.Number
+        keyboardType = KeyboardType.Number,
+        imeAction = imeAction
       )
       FieldType.Boolean -> DefaultSwitch(
         label = key,
@@ -128,7 +137,8 @@ class JSONUIParser(jsonString: String) {
           value = textFieldObject.value,
           onChange = onDataChange,
           error = textFieldObject.error ?: "",
-          keyboardType = getKeyboardTypeFromValue(KEY_VALUE, nestedJSONObject)
+          keyboardType = getKeyboardTypeFromValue(KEY_VALUE, nestedJSONObject),
+          imeAction = imeAction
         )
       }
       else -> {
@@ -140,8 +150,22 @@ class JSONUIParser(jsonString: String) {
 
   @Composable
   fun Fill(onDataChange: (String, Any) -> Unit) {
-    for (key in jsonObject.keys()) {
-      GetTextField(key = key, onDataChange = onDataChange)
+    val iterator = jsonObject.keys()
+    while (iterator.hasNext()) {
+      val key = iterator.next()
+      GetComposable(
+        key = key,
+        onDataChange = onDataChange,
+        imeAction = getImeAction(iterator.hasNext())
+      )
+    }
+  }
+
+  private fun getImeAction(hasNext: Boolean): ImeAction {
+    return if (hasNext) {
+      ImeAction.Next
+    } else {
+      ImeAction.Done
     }
   }
 }
