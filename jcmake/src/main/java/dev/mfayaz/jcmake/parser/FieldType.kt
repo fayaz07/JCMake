@@ -6,5 +6,6 @@ enum class FieldType {
   Double,
   String,
   Boolean,
+  TextFieldObject,
   Object
 }
