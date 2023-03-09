@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import dev.mfayaz.jcmake.exceptions.InvalidJSONException
 import dev.mfayaz.jcmake.exceptions.JSONParseException
+import dev.mfayaz.jcmake.model.mapper.TextFieldModelMapper
 import dev.mfayaz.jcmake.ui.DefaultSwitch
 import dev.mfayaz.jcmake.ui.DefaultTextField
 import java.math.BigDecimal
@@ -32,6 +33,11 @@ class JSONUIParser(jsonString: String) {
     }
   }
 
+  fun isTextFieldObject(key: String): Boolean {
+    val nestedObject = jsonObject.getJSONObject(key)
+    return nestedObject.has("value")
+  }
+
   fun typeOf(key: String): FieldType {
     return when (jsonObject.get(key)) {
       is String -> FieldType.String
@@ -41,7 +47,13 @@ class JSONUIParser(jsonString: String) {
       is Float -> FieldType.Double
       is Double -> FieldType.Double
       is BigDecimal -> FieldType.Double
-      else -> FieldType.Object
+      else -> {
+        if (isTextFieldObject(key)) {
+          FieldType.TextFieldObject
+        } else {
+          FieldType.Object
+        }
+      }
     }
   }
 
@@ -94,6 +106,14 @@ class JSONUIParser(jsonString: String) {
         value = jsonObject.getBoolean(key),
         onChange = onDataChange
       )
+      FieldType.TextFieldObject -> {
+        val textFieldObject = TextFieldModelMapper.parseFromJson(key, jsonObject.getJSONObject(key))
+        DefaultTextField(
+          label = textFieldObject.label,
+          value = textFieldObject.value,
+          onChange = onDataChange,
+        )
+      }
       else -> {
         Text(text = key)
       }
