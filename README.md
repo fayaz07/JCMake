@@ -9,3 +9,4 @@ This library takes JSON as input and produces Jetpack Compose's Composables as o
 ## Supported Composables
 
 - TextFields
+- Boolean
