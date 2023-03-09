@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import dev.mfayaz.jcmake.parser.JSONUIParser
 
 @Composable
-fun MakeUI(json: String, onDataChange: (String, String) -> Unit) {
+fun MakeUI(json: String, onDataChange: (String, Any) -> Unit) {
   val jsonUiParser = JSONUIParser(json)
 
   LazyColumn(
