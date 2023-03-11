@@ -36,5 +36,5 @@ fun onDataChange(key: String, value: Any) {
 
 @Composable
 fun Content() {
-  MakeUI(TestData.nestedJsonLevel2, ::onDataChange)
+  MakeUI(TestData.nestedJsonLevel3, ::onDataChange)
 }

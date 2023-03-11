@@ -32,7 +32,10 @@ fun DefaultTextFieldWithError(
     )
     if (error.isNotEmpty()) {
       Text(
-        modifier = Modifier.padding(top = 4.dp, start = 8.dp),
+        modifier = Modifier.padding(
+          top = 4.dp,
+          start = getNestedLevelPadding(level).plus(8.dp)
+        ),
         text = error,
         style = TextStyle(
           color = COLOR_ERROR

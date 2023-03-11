@@ -29,7 +29,7 @@ fun DefaultSwitch(
   Row(
     modifier = Modifier
       .fillMaxWidth()
-      .padding(top = 8.dp, start = (level * 4).dp)
+      .padding(top = 8.dp, start = getNestedLevelPadding(level))
   ) {
     Text(
       modifier = Modifier
