@@ -25,14 +25,15 @@ fun DefaultTextField(
   value: String,
   onChange: (String, String) -> Unit,
   keyboardType: KeyboardType = KeyboardType.Text,
-  imeAction: ImeAction = ImeAction.Default
+  imeAction: ImeAction = ImeAction.Default,
+  level: Int
 ) {
   val focusManager = LocalFocusManager.current
   var state by remember { mutableStateOf(value) }
   OutlinedTextField(
     modifier = Modifier
       .fillMaxWidth()
-      .padding(top = 8.dp),
+      .padding(top = 8.dp, start = getNestedLevelPadding(level)),
     keyboardOptions = KeyboardOptions(
       keyboardType = keyboardType,
       imeAction = imeAction,

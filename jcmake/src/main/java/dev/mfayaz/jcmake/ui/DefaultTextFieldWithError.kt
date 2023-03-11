@@ -18,7 +18,8 @@ fun DefaultTextFieldWithError(
   onChange: (String, String) -> Unit,
   keyboardType: KeyboardType = KeyboardType.Text,
   error: String = "",
-  imeAction: ImeAction
+  imeAction: ImeAction,
+  level: Int
 ) {
   Column {
     DefaultTextField(
@@ -26,11 +27,15 @@ fun DefaultTextFieldWithError(
       value = value,
       onChange = onChange,
       keyboardType = keyboardType,
-      imeAction = imeAction
+      imeAction = imeAction,
+      level = level
     )
     if (error.isNotEmpty()) {
       Text(
-        modifier = Modifier.padding(top = 4.dp, start = 8.dp),
+        modifier = Modifier.padding(
+          top = 4.dp,
+          start = getNestedLevelPadding(level).plus(8.dp)
+        ),
         text = error,
         style = TextStyle(
           color = COLOR_ERROR
