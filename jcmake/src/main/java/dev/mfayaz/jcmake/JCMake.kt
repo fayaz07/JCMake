@@ -1,5 +1,6 @@
 package dev.mfayaz.jcmake
 
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,6 +20,9 @@ fun MakeUI(json: String, onDataChange: (String, Any) -> Unit) {
   ) {
     item {
       jsonUiParser.Fill(onDataChange)
+    }
+    item {
+      Spacer(modifier = Modifier.padding(16.dp))
     }
   }
 }
