@@ -18,7 +18,8 @@ fun DefaultTextFieldWithError(
   onChange: (String, String) -> Unit,
   keyboardType: KeyboardType = KeyboardType.Text,
   error: String = "",
-  imeAction: ImeAction
+  imeAction: ImeAction,
+  level: Int
 ) {
   Column {
     DefaultTextField(
@@ -26,7 +27,8 @@ fun DefaultTextFieldWithError(
       value = value,
       onChange = onChange,
       keyboardType = keyboardType,
-      imeAction = imeAction
+      imeAction = imeAction,
+      level = level
     )
     if (error.isNotEmpty()) {
       Text(

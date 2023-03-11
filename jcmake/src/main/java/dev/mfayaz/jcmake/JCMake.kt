@@ -15,7 +15,7 @@ fun MakeUI(json: String, onDataChange: (String, Any) -> Unit) {
   LazyColumn(
     modifier = Modifier
       .fillMaxWidth()
-      .padding(horizontal = 16.dp)
+      .padding(horizontal = 8.dp)
   ) {
     item {
       jsonUiParser.Fill(onDataChange)

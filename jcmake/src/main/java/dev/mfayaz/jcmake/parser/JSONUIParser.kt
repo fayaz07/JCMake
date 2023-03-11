@@ -1,9 +1,15 @@
 package dev.mfayaz.jcmake.parser
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import dev.mfayaz.jcmake.exceptions.InvalidJSONException
 import dev.mfayaz.jcmake.exceptions.JSONParseException
 import dev.mfayaz.jcmake.model.json.KEY_VALUE
@@ -39,8 +45,8 @@ class JSONUIParser(jsonString: String) {
     return nestedObject.has("value")
   }
 
-  fun typeOf(key: String): FieldType {
-    return when (jsonObject.get(key)) {
+  fun typeOf(key: String, currJsonObject: JSONObject): FieldType {
+    return when (currJsonObject.get(key)) {
       is String -> FieldType.String
       is Boolean -> FieldType.Boolean
       is Int -> FieldType.Long
@@ -85,52 +91,71 @@ class JSONUIParser(jsonString: String) {
   }
 
   @Composable
+  fun Header(label: String, level: Int) {
+    Text(
+      modifier = Modifier.padding(start = (level * 4).dp, top = 16.dp),
+      text = label,
+      style = TextStyle(
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Bold,
+      )
+    )
+  }
+
+  @Composable
   fun GetComposable(
     key: String,
     onDataChange: (String, Any) -> Unit,
-    imeAction: ImeAction
+    imeAction: ImeAction,
+    currJsonObject: JSONObject,
+    level: Int
   ) {
-    when (typeOf(key)) {
+    when (typeOf(key, currJsonObject)) {
       FieldType.String -> DefaultTextField(
         label = key,
-        value = jsonObject.getString(key),
+        value = currJsonObject.getString(key),
         onChange = onDataChange,
-        imeAction = imeAction
+        imeAction = imeAction,
+        level = level
       )
       FieldType.Integer -> DefaultTextField(
         label = key,
-        value = jsonObject.getInt(key).toString(),
+        value = currJsonObject.getInt(key).toString(),
         onChange = { k, v ->
           onDataChange(k, parseInt(v))
         },
         keyboardType = KeyboardType.Number,
-        imeAction = imeAction
+        imeAction = imeAction,
+        level = level
       )
       FieldType.Long -> DefaultTextField(
         label = key,
-        value = jsonObject.getLong(key).toString(),
+        value = currJsonObject.getLong(key).toString(),
         onChange = { k, v ->
           onDataChange(k, parseLong(v))
         },
         keyboardType = KeyboardType.Number,
-        imeAction = imeAction
+        imeAction = imeAction,
+        level = level
       )
       FieldType.Double -> DefaultTextField(
         label = key,
-        value = jsonObject.getString(key),
+        value = currJsonObject.getString(key),
         onChange = { k, v ->
           onDataChange(k, parseDouble(v))
         },
         keyboardType = KeyboardType.Number,
-        imeAction = imeAction
+        imeAction = imeAction,
+        level = level
       )
       FieldType.Boolean -> DefaultSwitch(
         label = key,
-        value = jsonObject.getBoolean(key),
-        onChange = onDataChange
+        value = currJsonObject.getBoolean(key),
+        onChange = onDataChange,
+        level = level
       )
       FieldType.TextFieldObject -> {
-        val nestedJSONObject = jsonObject.getJSONObject(key)
+        val nestedJSONObject = currJsonObject.getJSONObject(key)
         val textFieldObject = TextFieldModelMapper.parseFromJson(key, nestedJSONObject)
         DefaultTextFieldWithError(
           label = textFieldObject.label,
@@ -138,27 +163,56 @@ class JSONUIParser(jsonString: String) {
           onChange = onDataChange,
           error = textFieldObject.error ?: "",
           keyboardType = getKeyboardTypeFromValue(KEY_VALUE, nestedJSONObject),
-          imeAction = imeAction
+          imeAction = imeAction,
+          level = level
         )
       }
       else -> {
-        Text(text = key)
+        if (currJsonObject.get(key) is JSONObject) {
+          GenerateComposables(
+            onDataChange = onDataChange,
+            currJsonObject = currJsonObject.getJSONObject(key),
+            level = level + 1,
+            header = key
+          )
+        } else {
+          Text(text = currJsonObject.get(key).toString())
+        }
       }
 //      FieldType.Object -> TODO()
     }
   }
 
   @Composable
-  fun Fill(onDataChange: (String, Any) -> Unit) {
-    val iterator = jsonObject.keys()
+  private fun GenerateComposables(
+    onDataChange: (String, Any) -> Unit,
+    currJsonObject: JSONObject,
+    level: Int,
+    header: String
+  ) {
+    val iterator = currJsonObject.keys()
+    Header(label = header, level = level)
     while (iterator.hasNext()) {
       val key = iterator.next()
+      println(key)
       GetComposable(
         key = key,
         onDataChange = onDataChange,
-        imeAction = getImeAction(iterator.hasNext())
+        imeAction = getImeAction(iterator.hasNext()),
+        currJsonObject = currJsonObject,
+        level = level
       )
     }
+  }
+
+  @Composable
+  fun Fill(onDataChange: (String, Any) -> Unit) {
+    GenerateComposables(
+      onDataChange,
+      jsonObject,
+      1,
+      "Root"
+    )
   }
 
   private fun getImeAction(hasNext: Boolean): ImeAction {

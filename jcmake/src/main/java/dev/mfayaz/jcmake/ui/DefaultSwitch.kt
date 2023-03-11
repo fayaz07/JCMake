@@ -15,7 +15,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -23,13 +22,14 @@ import androidx.compose.ui.unit.sp
 fun DefaultSwitch(
   label: String,
   value: Boolean,
-  onChange: (String, Boolean) -> Unit
+  onChange: (String, Boolean) -> Unit,
+  level: Int
 ) {
   var state by remember { mutableStateOf(value) }
   Row(
     modifier = Modifier
       .fillMaxWidth()
-      .padding(top = 8.dp)
+      .padding(top = 8.dp, start = (level * 4).dp)
   ) {
     Text(
       modifier = Modifier
