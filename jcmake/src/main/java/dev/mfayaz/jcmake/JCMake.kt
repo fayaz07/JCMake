@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.mfayaz.jcmake.parser.JSONUIParser
+import dev.mfayaz.jcmake.parser.ui.Fill
 
 @Composable
 fun MakeUI(json: String, onDataChange: (String, Any) -> Unit) {
@@ -19,7 +20,7 @@ fun MakeUI(json: String, onDataChange: (String, Any) -> Unit) {
       .padding(horizontal = 8.dp)
   ) {
     item {
-      jsonUiParser.Fill(onDataChange)
+      Fill(jsonUiParser.rootJsonObject, onDataChange)
     }
     item {
       Spacer(modifier = Modifier.padding(16.dp))
