@@ -1,5 +1,6 @@
 package dev.mfayaz.jcmake
 
+import android.util.Log
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,11 +12,9 @@ import dev.mfayaz.jcmake.parser.JSONUIParser
 import dev.mfayaz.jcmake.parser.ui.Fill
 
 @Composable
-fun MakeUI(json: String, onDataChange: (String, Any) -> Unit) {
-  val jsonUiParser = JSONUIParser(json)
-
+fun MakeUI(modifier: Modifier, jsonUiParser: JSONUIParser, onDataChange: (String, Any) -> Unit ) {
   LazyColumn(
-    modifier = Modifier
+    modifier = modifier
       .fillMaxWidth()
       .padding(horizontal = 8.dp)
   ) {

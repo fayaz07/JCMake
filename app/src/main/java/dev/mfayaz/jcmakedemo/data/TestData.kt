@@ -7,6 +7,9 @@ object TestData {
   const val nestedJsonLevel2 =
     "{\"name\":\"sarah\",\"age\":24,\"rollNumber\":{\"value\":\"A123\"},\"marks\":{\"cgpa\":4.7}}"
 
+  const val nestedJsonLevel2WithTFObject =
+    "{\"name\":\"sarah\",\"age\":24,\"rollNumber\":{\"value\":\"A123\"},\"marks\":{\"cgpa\":{\"value\":4.7}}}"
+
   const val nestedJsonLevel3 =
     "{\"name\":\"sarah\",\"age\":24,\"rollNumber\":{\"value\":\"A123\"},\"marks\":{\"cgpa\":4.7,\"semester\":{\"sem-1-1\":4.8,\"sem-1-2\":4.6}}}"
 
