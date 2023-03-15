@@ -15,6 +15,11 @@ This library takes JSON as input and produces Jetpack Compose's Composables as o
 
 ## Examples and Demo
 
+### Demo app 
+User will get updates whenever any field is updated, alternatively they can pull latest updates too. 
+The `Send` button in the demo screenshot will do that.
+<img src="screenshots/demo.png" width="33%" />
+
 #### Simple JSON with nested Key-Value and Error values
 ```json
 {
