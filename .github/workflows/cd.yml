@@ -1,0 +1,51 @@
+name: cd
+
+on:
+  release:
+    branches: [main]
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Pull library version from build.gradle
+        run: |
+          echo "lib_v=$(grep "version" jcmake/build.gradle | awk '{print $2}' | tr -d \''"\')" >> $GITHUB_ENV
+
+      - name: Checking if library version from build.gradle and release tag matches
+        run: |
+          if [ "${{ github.ref_name }}" = "${{ env.lib_v }}" ]; then
+            echo "Release tag and library version matches"
+          else
+            echo "Release tag should match the build version for the package"
+            exit 1
+          fi
+
+      - name: setup project configuration
+        run: bash .github/workflows/setup.sh ${{ secrets.gh_username }} ${{ secrets.access_token }}
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: 17
+
+      - name: Run Unit Tests
+        run: ./gradlew :jcmake:testDebugUnitTest
+
+      - name: Build release
+        run: ./gradlew assembleRelease
+
+      - name: Upload build archive
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: lib
+          path: jcmake/build/outputs/aar/jcmake-release.aar
+
+      - name: Publish artifact
+        run: |
+          ./gradlew publish

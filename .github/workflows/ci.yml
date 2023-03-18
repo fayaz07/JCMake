@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: setup project configuration
-        run: bash .github/workflows/setup.sh
+        run: bash .github/workflows/setup.sh ${{ secrets.gh_username }} ${{ secrets.access_token }}
 
       - name: Setup Java
         uses: actions/setup-java@v3
@@ -31,7 +31,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: setup project configuration
-        run: bash .github/workflows/setup.sh
+        run: bash .github/workflows/setup.sh ${{ secrets.gh_username }} ${{ secrets.access_token }}
 
       - name: Setup Java
         uses: actions/setup-java@v3
