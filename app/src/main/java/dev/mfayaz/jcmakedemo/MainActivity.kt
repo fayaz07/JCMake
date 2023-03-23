@@ -22,7 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import dev.mfayaz.jcmake.MakeUI
 import dev.mfayaz.jcmake.parser.JSONUIParser
-import dev.mfayaz.jcmake.ui.PrettyJSON
+import dev.mfayaz.jcmake.parser.PrettyJSON
 import dev.mfayaz.jcmakedemo.data.TestData
 import dev.mfayaz.jcmakedemo.ui.theme.JCMakeTheme
 
