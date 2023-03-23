@@ -16,7 +16,7 @@ This library takes JSON as input and produces Jetpack Compose's Composables as o
 
 ## Installation
 
-Latest version: ![Library Version](https://img.shields.io/badge/version-0.0.1-success)
+Latest version: ![Library Version](https://img.shields.io/badge/version-0.0.2-success)
 
 As this library is in development phase as of now, you might need an API_KEY to use this library in
 your project. Please reach out to [@fayaz07](https://github.com/fayaz07) for API Key.
@@ -54,7 +54,7 @@ Finally, add dependency declaration inside your module's `build.gradle`.
 ```groovy
 dependencies {
   ...
-  implementation 'dev.mfayaz:jcmake:0.0.1'
+  implementation 'dev.mfayaz:jcmake:0.0.2'
 }
 ```
 
