@@ -14,5 +14,5 @@ object TestData {
     "{\"name\":\"sarah\",\"age\":24,\"rollNumber\":{\"value\":\"A123\"},\"marks\":{\"cgpa\":4.7,\"semester\":{\"sem-1-1\":4.8,\"sem-1-2\":4.6}}}"
 
   const val nestedJsonLevel4 =
-    "{\"name\":\"sarah\",\"age\":24,\"rollNumber\":{\"value\":\"A123\"},\"marks\":{\"cgpa\":4.7,\"semester\":{\"sem-1-1\":4.8,\"sub-1-1\":{\"sub-a\":4.7,\"sub-b\":4.8},\"sem-1-2\":4.6,\"sub-1-2\":{\"sub-c\":4.7,\"sub-d\":4.8}}}}"
+    "{\"name\":\"sarah\",\"age\":24,\"rollNumber\":{\"value\":\"A123\"},\"marks\":{\"cgpa\":4.7,\"semester\":{\"sem-1-1\":4.8,\"sub-1-1\":{\"sub-a\":4.7,\"sub-b\":4.8},\"sem-1-2\":4.6,\"sub-1-2\":{\"sub-c\":4.7,\"sub-d\":true}}}}"
 }

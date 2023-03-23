@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import dev.mfayaz.jcmake.MakeUI
 import dev.mfayaz.jcmake.parser.JSONUIParser
+import dev.mfayaz.jcmake.ui.PrettyJSON
 import dev.mfayaz.jcmakedemo.data.TestData
 import dev.mfayaz.jcmakedemo.ui.theme.JCMakeTheme
 
@@ -35,7 +36,8 @@ class MainActivity : ComponentActivity() {
           modifier = Modifier.fillMaxSize(),
           color = MaterialTheme.colorScheme.background
         ) {
-          Content()
+//          Content()
+          PrettyJSONDemo()
         }
       }
     }
@@ -71,4 +73,10 @@ fun Content() {
       onDataChange = ::onDataChange
     )
   }
+}
+
+@Composable
+fun PrettyJSONDemo() {
+  val jsonUiParser = remember { JSONUIParser(TestData.nestedJsonLevel4) }
+  PrettyJSON(jsonUiParser)
 }
