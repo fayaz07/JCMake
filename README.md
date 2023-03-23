@@ -14,14 +14,60 @@ This library takes JSON as input and produces Jetpack Compose's Composables as o
 - Nested JSON Support
 - Pretty JSON
 
+## Installation
+
+Latest version: ![Library Version](https://img.shields.io/badge/version-0.0.1-success)
+
+As this library is in development phase as of now, you might need an API_KEY to use this library in
+your project. Please reach out to [@fayaz07](https://github.com/fayaz07) for API Key.
+
+After getting the API Key, inside `local.properties` add the below lines.
+
+```properties
+gpr.usr=fayaz07
+gpr.key=<api_key>
+```
+
+Add the below maven tag inside `settings.gradle` file.
+
+```groovy
+dependencyResolutionManagement {
+  ...
+  repositories {
+    ...
+    maven {
+      def localProperties = new Properties()
+      localProperties.load(new FileInputStream("local.properties"))
+
+      url = uri("https://maven.pkg.github.com/fayaz07/JCMake")
+      credentials {
+        username = localProperties["gpr.usr"] ?: System.getenv("USERNAME")
+        password = localProperties["gpr.key"] ?: System.getenv("TOKEN")
+      }
+    }
+  }
+}
+```
+
+Finally, add dependency declaration inside your module's `build.gradle`.
+
+```groovy
+dependencies {
+  ...
+  implementation 'dev.mfayaz:jcmake:0.0.1'
+}
+```
+
 ## Examples and Demo
 
-### Demo app 
-User will get updates whenever any field is updated, alternatively they can pull latest updates too. 
+### Demo app
+
+User will get updates whenever any field is updated, alternatively they can pull latest updates too.
 The `Send` button in the demo screenshot will do that.
 <img src="screenshots/demo.png" width="33%" />
 
 #### Simple JSON with nested Key-Value and Error values
+
 ```json
 {
   "name": "sarah",
@@ -44,9 +90,11 @@ The `Send` button in the demo screenshot will do that.
 ```
 
 #### Output
+
 <img src="screenshots/s1.png" width="33%" />
 
 #### Nested Level - 2
+
 ```json
 {
   "name": "sarah",
@@ -56,14 +104,16 @@ The `Send` button in the demo screenshot will do that.
   },
   "marks": {
     "cgpa": 4.7
-   }
+  }
 }
 ```
 
 #### Output
+
 <img src="screenshots/nested_2.png" width="33%" />
 
 #### Nested Level - 3
+
 ```json
 {
   "name": "sarah",
@@ -82,9 +132,11 @@ The `Send` button in the demo screenshot will do that.
 ```
 
 #### Output
+
 <img src="screenshots/nested_3.png" width="33%" />
 
 #### Nested Level - 4
+
 ```json
 {
   "name": "sarah",
@@ -111,7 +163,9 @@ The `Send` button in the demo screenshot will do that.
 ```
 
 #### Output
+
 <img src="screenshots/nested_4.png" width="33%" />
 
 #### Print JSON to UI
+
 <img src="screenshots/pretty_json_1.png" width="33%" />
