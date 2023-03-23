@@ -1,4 +1,4 @@
-package dev.mfayaz.jcmake.ui
+package dev.mfayaz.jcmake.parser
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,7 +8,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.mfayaz.jcmake.parser.JSONUIParser
+import dev.mfayaz.jcmake.parser.utils.conditionalComma
+import dev.mfayaz.jcmake.parser.utils.getClosingBraces
+import dev.mfayaz.jcmake.parser.utils.getRootText
 import dev.mfayaz.jcmake.style.COLOR_BLUE
 import dev.mfayaz.jcmake.style.COLOR_GREEN
 import dev.mfayaz.jcmake.style.COLOR_ORANGE
@@ -69,26 +71,6 @@ private fun BuildKeyValuePair(key: String, json: JSONObject, level: Int, hasNext
       Spacer(modifier = Modifier.padding(vertical = 4.dp))
       GetValueTextView(key = key, currJsonObject = json, hasNext = hasNext)
     }
-  }
-}
-
-private fun conditionalComma(hasMore: Boolean): String {
-  return if (hasMore) {
-    ","
-  } else {
-    ""
-  }
-}
-
-private fun getClosingBraces(hasMore: Boolean): String {
-  return "}${conditionalComma(hasMore)}"
-}
-
-private fun getRootText(rootKey: String): String {
-  return if (rootKey.isNotEmpty()) {
-    "\"${rootKey}\": {"
-  } else {
-    "{"
   }
 }
 
