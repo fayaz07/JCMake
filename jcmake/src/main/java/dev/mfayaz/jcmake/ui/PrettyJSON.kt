@@ -17,42 +17,45 @@ import java.math.BigDecimal
 import org.json.JSONObject
 
 @Composable
-fun PrettyJSON(jsonUiParser: JSONUIParser) {
+fun PrettyJSON(
+  modifier: Modifier = Modifier,
+  jsonUiParser: JSONUIParser
+) {
   LazyColumn(
-    modifier = Modifier
+    modifier = modifier
       .padding(16.dp)
   ) {
     item {
-      JSONObjectPrint(jsonUiParser.rootJsonObject)
+      BuildJSONUI(jsonUiParser.rootJsonObject)
     }
   }
 }
 
 @Composable
-private fun JSONObjectPrint(root: JSONObject) {
-  NestedJSON(rootKey = "", json = root, level = 1, hasNext = false)
+private fun BuildJSONUI(root: JSONObject) {
+  BuildNestedJSON(rootKey = "", json = root, level = 1, hasNext = false)
 }
 
 @Composable
-private fun NestedJSON(rootKey: String, json: JSONObject, level: Int, hasNext: Boolean) {
+private fun BuildNestedJSON(rootKey: String, json: JSONObject, level: Int, hasNext: Boolean) {
   val keys = json.keys()
   Text(
     text = getRootText(rootKey),
     modifier = Modifier.padding(start = ((level - 1) * 8).dp)
   )
   while (keys.hasNext()) {
-    JSONField(keys.next(), json, level, keys.hasNext())
+    BuildKeyValuePair(keys.next(), json, level, keys.hasNext())
   }
   Text(
-    text = getEnd(hasNext),
+    text = getClosingBraces(hasNext),
     modifier = Modifier.padding(start = ((level - 1) * 8).dp)
   )
 }
 
 @Composable
-private fun JSONField(key: String, json: JSONObject, level: Int, hasNext: Boolean) {
+private fun BuildKeyValuePair(key: String, json: JSONObject, level: Int, hasNext: Boolean) {
   if (json.get(key) is JSONObject) {
-    NestedJSON(
+    BuildNestedJSON(
       rootKey = key,
       json = json.getJSONObject(key),
       level = level + 1,
@@ -64,12 +67,12 @@ private fun JSONField(key: String, json: JSONObject, level: Int, hasNext: Boolea
     ) {
       Text(text = "\"$key\": ")
       Spacer(modifier = Modifier.padding(vertical = 4.dp))
-      GetTextValue(key = key, currJsonObject = json, hasNext = hasNext)
+      GetValueTextView(key = key, currJsonObject = json, hasNext = hasNext)
     }
   }
 }
 
-private fun getComma(hasMore: Boolean): String {
+private fun conditionalComma(hasMore: Boolean): String {
   return if (hasMore) {
     ","
   } else {
@@ -77,8 +80,8 @@ private fun getComma(hasMore: Boolean): String {
   }
 }
 
-private fun getEnd(hasMore: Boolean): String {
-  return "}${getComma(hasMore)}"
+private fun getClosingBraces(hasMore: Boolean): String {
+  return "}${conditionalComma(hasMore)}"
 }
 
 private fun getRootText(rootKey: String): String {
@@ -90,7 +93,7 @@ private fun getRootText(rootKey: String): String {
 }
 
 @Composable
-private fun GetTextValue(
+private fun GetValueTextView(
   key: String,
   currJsonObject: JSONObject,
   hasNext: Boolean
@@ -127,5 +130,5 @@ private fun GetTextValue(
     }
     else -> currJsonObject.get(key)
   }
-  Text(text = "${value}${getComma(hasNext)}", color = color)
+  Text(text = "${value}${conditionalComma(hasNext)}", color = color)
 }

@@ -78,5 +78,7 @@ fun Content() {
 @Composable
 fun PrettyJSONDemo() {
   val jsonUiParser = remember { JSONUIParser(TestData.nestedJsonLevel4) }
-  PrettyJSON(jsonUiParser)
+  PrettyJSON(
+    jsonUiParser = jsonUiParser
+  )
 }
