@@ -12,6 +12,7 @@ This library takes JSON as input and produces Jetpack Compose's Composables as o
 - TextFields with Custom error message
 - Switches
 - Nested JSON Support
+- Pretty JSON
 
 ## Examples and Demo
 
@@ -111,3 +112,6 @@ The `Send` button in the demo screenshot will do that.
 
 #### Output
 <img src="screenshots/nested_4.png" width="33%" />
+
+#### Print JSON to UI
+<img src="screenshots/pretty_json_1.png" width="33%" />
