@@ -22,7 +22,7 @@ publishing {
         bar(MavenPublication) {
             groupId 'dev.mfayaz'
             artifactId 'jcmake'
-            version '0.0.2'
+            version '0.0.2+1'
             artifact("$buildDir/outputs/aar/jcmake-release.aar")
         }
     }
